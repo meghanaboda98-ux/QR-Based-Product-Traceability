@@ -1,0 +1,195 @@
+
+{% extends "base.html" %}
+
+{% block title %}Product Traceability{% endblock %}
+
+{% block content %}
+
+<h1>Product Traceability Details</h1>
+
+<div class="form-card">
+
+    <h2>{{ product.product_name }}</h2>
+
+    <p><strong>Batch Code:</strong>
+        {{ product.batch_code }}</p>
+
+    <p><strong>Variety:</strong>
+        {{ product.variety }}</p>
+
+    <p><strong>Farmer:</strong>
+        {{ product.farmer_name }}</p>
+
+    <p><strong>Phone:</strong>
+        {{ product.farmer_phone }}</p>
+
+    <p><strong>FPO:</strong>
+        {{ product.fpo_name }}</p>
+
+    <p><strong>Quantity:</strong>
+        {{ product.quantity }} {{ product.unit }}</p>
+
+    <p><strong>Village:</strong>
+        {{ product.village }}</p>
+
+    <p><strong>District:</strong>
+        {{ product.district }}</p>
+
+    <p><strong>State:</strong>
+        {{ product.state }}</p>
+
+    <p><strong>Harvest Date:</strong>
+        {{ product.harvest_date }}</p>
+
+    <p><strong>Collection Date:</strong>
+        {{ product.collection_date }}</p>
+
+    <p><strong>Quality Notes:</strong>
+        {{ product.quality_notes }}</p>
+
+    <h2>Product QR Code</h2>
+
+    <img
+        class="qr-image"
+        src="{{ url_for(
+            'static',
+            filename='qr_codes/' + qr_filename
+        ) }}"
+        alt="Product QR Code">
+
+    <p>
+
+        <a class="button"
+           href="{{ url_for(
+               'static',
+               filename='qr_codes/' + qr_filename
+           ) }}"
+           download>
+            Download QR Code
+        </a>
+
+    </p>
+
+    <p>
+
+        <a href="{{ url_for(
+            'trace_product',
+            code=product.batch_code
+        ) }}"
+        target="_blank">
+
+            Open Public Traceability Page
+
+        </a>
+
+    </p>
+
+</div>
+
+
+<h2>Supply Chain History</h2>
+
+<div class="form-card">
+
+    {% if events %}
+
+        {% for event in events %}
+
+            <div class="event">
+
+                <h3>{{ event.event_type }}</h3>
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ event.location }}
+                </p>
+
+                <p>{{ event.description }}</p>
+
+                <p>
+                    <strong>Updated by:</strong>
+                    {{ event.updated_by }}
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
+                    {{ event.event_date }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No supply-chain updates available.</p>
+
+    {% endif %}
+
+</div>
+
+
+<h2>Add Supply Chain Update</h2>
+
+<form class="form-card"
+      method="POST"
+      action="{{ url_for(
+          'add_event',
+          code=product.batch_code
+      ) }}">
+
+    <label>Event Type</label>
+
+    <select name="event_type" required>
+
+        <option value="Collected">
+            Collected
+        </option>
+
+        <option value="Quality Checked">
+            Quality Checked
+        </option>
+
+        <option value="Transport Started">
+            Transport Started
+        </option>
+
+        <option value="Warehouse Received">
+            Warehouse Received
+        </option>
+
+        <option value="Market Received">
+            Market Received
+        </option>
+
+        <option value="Retail Received">
+            Retail Received
+        </option>
+
+        <option value="Delivered to Consumer">
+            Delivered to Consumer
+        </option>
+
+    </select>
+
+    <label>Current Location</label>
+
+    <input type="text"
+           name="location">
+
+    <label>Description</label>
+
+    <textarea name="description"></textarea>
+
+    <label>Updated By</label>
+
+    <input type="text"
+           name="updated_by">
+
+    <button type="submit">
+        Save Supply Chain Update
+    </button>
+
+</form>
+
+{% endblock %}

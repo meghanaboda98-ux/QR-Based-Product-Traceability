@@ -1,0 +1,117 @@
+
+{% extends "base.html" %}
+
+{% block title %}Scan Product QR{% endblock %}
+
+{% block content %}
+
+<h1>Scan Agricultural Product QR Code</h1>
+
+<div class="form-card">
+
+    <p>
+        Allow camera access and point your camera
+        towards the product QR code.
+    </p>
+
+    <div id="reader"></div>
+
+    <p id="scan-status">
+        Waiting for QR scan...
+    </p>
+
+    <label>Or enter batch code manually</label>
+
+    <input type="text"
+           id="batch-code"
+           placeholder="Example: AG-1234567890">
+
+    <button type="button"
+            onclick="openProduct()">
+
+        View Product
+
+    </button>
+
+</div>
+
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<script>
+
+function openProduct() {
+
+    const code = document
+        .getElementById("batch-code")
+        .value.trim();
+
+    if (!code) {
+
+        alert("Please enter a batch code.");
+
+        return;
+    }
+
+    window.location.href =
+        "/trace/" + encodeURIComponent(code);
+}
+
+
+function onScanSuccess(decodedText) {
+
+    document.getElementById("scan-status")
+        .innerText = "QR code scanned successfully.";
+
+    if (
+        decodedText.startsWith("http://") ||
+        decodedText.startsWith("https://")
+    ) {
+
+        window.location.href = decodedText;
+
+    } else {
+
+        document.getElementById("batch-code")
+            .value = decodedText;
+
+        openProduct();
+    }
+
+}
+
+
+if (typeof Html5Qrcode !== "undefined") {
+
+    const scanner = new Html5Qrcode("reader");
+
+    scanner.start(
+
+        { facingMode: "environment" },
+
+        {
+            fps: 10,
+            qrbox: 250
+        },
+
+        onScanSuccess
+
+    ).catch(function(error) {
+
+        document.getElementById("scan-status")
+            .innerText =
+            "Camera could not start. Check camera permissions or use manual entry.";
+
+    });
+
+} else {
+
+    document.getElementById("scan-status")
+        .innerText =
+        "Scanner library could not load. Use manual batch-code entry.";
+
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,105 @@
+
+{% extends "base.html" %}
+
+{% block title %}Register Product{% endblock %}
+
+{% block content %}
+
+<h1>Register Agricultural Product</h1>
+
+<form method="POST" class="form-card">
+
+    <h2>Product Information</h2>
+
+    <label>Product Name *</label>
+
+    <input type="text"
+           name="product_name"
+           required
+           placeholder="Example: Tomato">
+
+    <label>Variety</label>
+
+    <input type="text"
+           name="variety">
+
+    <label>Quantity</label>
+
+    <input type="number"
+           name="quantity"
+           step="0.01"
+           min="0">
+
+    <label>Unit</label>
+
+    <select name="unit">
+
+        <option value="kg">Kilograms</option>
+
+        <option value="quintal">Quintal</option>
+
+        <option value="tonne">Tonne</option>
+
+        <option value="pieces">Pieces</option>
+
+    </select>
+
+    <h2>Farmer / FPO Information</h2>
+
+    <label>Farmer Name *</label>
+
+    <input type="text"
+           name="farmer_name"
+           required>
+
+    <label>Farmer Phone</label>
+
+    <input type="tel"
+           name="farmer_phone">
+
+    <label>FPO Name</label>
+
+    <input type="text"
+           name="fpo_name">
+
+    <h2>Farm Location</h2>
+
+    <label>Village</label>
+
+    <input type="text"
+           name="village">
+
+    <label>District</label>
+
+    <input type="text"
+           name="district">
+
+    <label>State</label>
+
+    <input type="text"
+           name="state">
+
+    <h2>Harvest and Quality Information</h2>
+
+    <label>Harvest Date</label>
+
+    <input type="date"
+           name="harvest_date">
+
+    <label>Collection Date</label>
+
+    <input type="date"
+           name="collection_date">
+
+    <label>Quality Notes</label>
+
+    <textarea name="quality_notes"
+              placeholder="Enter quality observations"></textarea>
+
+    <button type="submit">
+        Register and Generate QR
+    </button>
+
+</form>
+
+{% endblock %}

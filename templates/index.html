@@ -1,0 +1,95 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AgriTrace{% endblock %}
+
+{% block content %}
+
+<h1>Agricultural Traceability Dashboard</h1>
+
+<div class="stats">
+
+    <div class="stat-card">
+        <h3>Total Products</h3>
+        <p>{{ total_products }}</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>Supply Chain Updates</h3>
+        <p>{{ total_events }}</p>
+    </div>
+
+</div>
+
+<div class="page-heading">
+
+    <h2>Registered Products</h2>
+
+    <a class="button"
+       href="{{ url_for('register_product') }}">
+        Register New Product
+    </a>
+
+</div>
+
+{% if products %}
+
+<div class="table-wrapper">
+
+<table>
+
+    <thead>
+
+        <tr>
+            <th>Batch Code</th>
+            <th>Product</th>
+            <th>Farmer</th>
+            <th>District</th>
+            <th>Harvest Date</th>
+            <th>Details</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        {% for product in products %}
+
+        <tr>
+
+            <td>{{ product.batch_code }}</td>
+
+            <td>{{ product.product_name }}</td>
+
+            <td>{{ product.farmer_name }}</td>
+
+            <td>{{ product.district }}</td>
+
+            <td>{{ product.harvest_date }}</td>
+
+            <td>
+                <a href="{{ url_for(
+                    'product_details',
+                    code=product.batch_code
+                ) }}">
+                    View
+                </a>
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+{% else %}
+
+<p>No products registered yet.</p>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,25 @@
+ 
+{% extends "base.html" %}
+
+{% block title %}Page Not Found{% endblock %}
+
+{% block content %}
+
+<div class="form-card">
+
+    <h1>404 - Page Not Found</h1>
+
+    <p>
+        The requested product or page could not be found.
+    </p>
+
+    <a class="button"
+       href="{{ url_for('home') }}">
+
+        Return to Dashboard
+
+    </a>
+
+</div>
+
+{% endblock %}
